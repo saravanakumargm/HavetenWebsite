@@ -648,3 +648,18 @@ img{
     column-gap: 5rem;
   }
 }
+
+.body{
+  background-color: white;
+}
+.blog-body{
+  margin-top: 5%;
+  margin-left: 25%;
+  width: 50%;
+  height: 90%;
+  max-height: 90%;
+  background-color: #2B7A78;
+}
+.blog-name{
+  text-align: center;
+}
