@@ -270,6 +270,7 @@ img{
 
 /*========== HOME ==========*/
 .home__container{
+  margin-left: 10%;
   row-gap: .5rem;
 }
 
@@ -279,9 +280,14 @@ img{
 }
 
 .home__title{
-  font-size: var(--biggest-font-size);
+  /* font-size: var(--biggest-font-size);
   font-weight: var(--font-bold);
-  margin-bottom: var(--mb-2);
+  margin-bottom: var(--mb-1);
+  text-align: center3;
+  margin-left: 50%; */
+  margin: 0.001%;
+  font-size: xx-large;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .home__description{
@@ -319,8 +325,20 @@ img{
   text-align: center;
 }
 
+.about_us{
+  margin-top: 30px;
+  font-size: larger;
+}
+
+.home__data{
+  margin-top: 50px;
+}
+
 .share__description{
-  margin-bottom: var(--mb-2);
+  /* margin-bottom: var(--mb-4); */
+  font-size: var(--h2-font-size);
+  font-weight:700;
+  margin-left:32%;
 }
 
 .share__img{
@@ -517,7 +535,7 @@ img{
 }
 
 @media screen and (min-width: 576px){
-  .home__container,
+  /* .home__container, */
   .share__container,
   .send__container{
     grid-template-columns: repeat(2,1fr);
@@ -526,6 +544,8 @@ img{
 
   .home__container{
     padding: 0rem 0 0;
+    
+    margin-bottom: 25%;
   }
 
   .home__img{
@@ -584,10 +604,13 @@ img{
 
   .home__container{
     padding: 2rem 2rem 0;
+    margin-top: 10%;
   }
 
   .share__container{
     padding: 0 2rem;
+    margin-left: 30%;
+    font-size: xx-large;
   }
 
   .accessory__container{
@@ -653,11 +676,11 @@ img{
   background-color: white;
 }
 .blog-body{
-  margin-top: 5%;
-  margin-left: 25%;
-  width: 50%;
-  height: 90%;
-  max-height: 90%;
+  margin-left: 170px;
+  margin-right: 170px;
+  margin-top: 10px;
+  
+  border-radius: 8px;
   background-color: #2B7A78;
 }
 .blog-name{
