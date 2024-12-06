@@ -1,189 +1,401 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haveten Securities</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        <!--========== BOX ICONS ==========-->
-        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      background: #000;
+      color: #ffffff;
+    }
 
-        <!--========== CSS ==========-->
-        <link rel="stylesheet" href="assets/css/styles.css">
+    a {
+      text-decoration: none;
+      color: #ffffff;
+      transition: color 0.3s;
+    }
 
+    a:hover {
+      color: #0ff;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Merriweather', serif;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #000;
+      color: #00f6ff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #00f6ff;
+    }
+
+    .navbar h1 {
+      font-size: 1.8rem;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .navbar li {
+      font-size: 1rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: #000;
+      color: #ffffff;
+      text-align: center;
+      padding: 100px 20px;
+      position: relative;
+      /* border-bottom: 1px solid #00f6ff; */
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    .hero .cta-btn {
+      background: #00f6ff;
+      color: #000;
+      padding: 15px 30px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .hero .cta-btn:hover {
+      background: #0ff;
+    }
+
+    /* Section Styles */
+    section {
+      padding: 60px 20px;
+    }
+
+    section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    section p {
+      max-width: 800px;
+      margin: 0 auto 20px;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    /* Blog Section */
+    .blog {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .blog-card {
+      background: #111;
+      padding: 20px;
+      border: 1px solid #24dbe8;
+      border-radius: 10px;
+      max-width: 300px;
+    }
+
+    .blog-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .blog-card p {
+      font-size: 1rem;
+    }
+
+    /* Workshop Section */
+    .workshop-section {
+      background: #111;
+    }
+
+    /* Contact Section */
+    .contact {
+      background: #000;
+      border-top: 1px solid #ffffff;
+    }
+
+    .contact-form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .contact-form input, .contact-form textarea, .contact-form button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 1rem;
+      border: 1px solid #00f6ff;
+      border-radius: 5px;
+      background: #111;
+      color: #ffffff;
+    }
+
+    .contact-form button {
+      background: #00f6ff;
+      color: #000;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .contact-form button:hover {
+      background: rgb(255, 255, 255);
+    }
+
+    /* Footer */
+    footer {
+      background: #111;
+      color: #ffffff;
+      text-align: center;
+      padding: 20px 0;
+      border-top: 1px solid #00f6ff;
+    }
+    
+    footer p {
+      font-size: 0.9rem;
+    }
+    .nav__logo{
+        color: var(--title-color);
+        font-weight: var(--font-semi-bold);
+        size;
+    }
+
+    .nav__logo:hover{
+    color: var(--first-color);
+    }
+    /* Navbar Logo */
+.logo-container {
+  /* display: flex; */
+  height: 50px;
+  display: flex;
+  /* align-items: center; */
+  margin-right: 15px;
+}
+
+.logo {
+  max-height: 50px; /* Adjust size as needed */
+  width:80px;
+}
+.register-btn {
+      /* background: #00f6ff;
+      color: #000;
       
-    </head>
-    <body>
-        <!--========== SCROLL TOP ==========-->
-        <a href="#" class="scrolltop" id="scroll-top">
-            <i class='bx bx-up-arrow-alt scrolltop__icon'></i>
-        </a>
+      justify-content: center;
+      text-transform: uppercase;
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      text-decoration: none; */
         
-        <!--========== HEADER ==========-->
-        <header class="l-header" id="header">
-            <nav class="nav bd-container">
-                <a href="#" class="nav__logo"> <img src="assets\img\finallogo.png" alt="logo" id="logo"></a>
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 1rem;
+      border: 1px solid #00f6ff;
+      border-radius: 5px;
+      background: #5dd6eb;
+      color: #000000;
+      object-position: center;
+    }
 
-                <div class="nav__menu" id="nav-menu">
-                    <ul class="nav__list">
-                        <li class="nav__item"><a href="#home" class="nav__link active-link">Home</a></li>
-                        <li class="nav__item"><a href="blog.html" class="nav__link ">Blogs</a></li>
-                        <li class="nav__item"><a href="#share" class="nav__link">About Us</a></li>
-                        <!-- <li class="nav__item"><a href="#decoration" class="nav__link">Our Services</a></li>
-                        <li class="nav__item"><a href="#accessory" class="nav__link">Invest Now</a></li>
-                        <li class="nav__item"><a href="/Login.html" class="nav__link">Login</a></li>
-                        <li class="nav__item"><a href="/Register.html" class="nav__link">Register</a></li> -->
+    .register-btn:hover {
+      background: rgb(3, 104, 104);
+      transform: scale(1.1);
+    }
+    .decoration__container{
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
 
-                        <!-- <li><i class='bx bx-toggle-left change-theme' id="theme-button"></i></li> -->
-                    </ul>
-                </div>
+.decoration__data{
+  text-align: center;
+  padding: 1rem 1rem 2rem;
+  margin-top: 30px;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  background-color: var(--container-color);
+  box-shadow: 0 2px 6px rgba(65,11,16,.15);
+  border-radius: 1rem;
+}
 
-                <div class="nav__toggle" id="nav-toggle">
-                    <i class='bx bx-grid-alt'></i>
-                </div>
-            </nav>
-        </header>
+.decoration__data:hover{
+  box-shadow: 0 3px 12px rgba(65,11,16,.15);
+}
 
-        <main class="l-main">
-            <!--========== HOME ==========-->
-            <section class="home" id="home">
-                <div class="home__container bd-container bd-grid">
-                    <!-- <div class="home__img">
-                        <img src="assets/img/Homeimage.png" alt="">
-                    </div> -->
+.decoration__img{
+  width: 180px;
+}
 
-                    <div class="home__data">
-                        <h1 class="home__title"></h1>
-                        <!-- /<img src="assets/img/SL-012322-48100-11.jpg"></img> -->
-                        <h1 class="home__title">Driven by passion, grounded in strategy—at Haveten, we invest in growth, vision, and resilience</h1>
-                        <!-- <p class="home__description">"The more you learn,the more you earn"</p>
-                        <a href="#" class="button">Let's Earn</a> -->
-                    </div>   
-                </div>
-            </section>
+.register{
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 
-            <section class="share section bd-container" id="share">
-                <div class="share__container bd-grid">
-                    <div class="share__data">
-                        
-                        <p class="share__description" id="thankyou">About Us</p>
-                        
-                        
-                    </div>
-                    
+.decoration__title{
+  font-size: var(--h3-font-size);
+  margin-top: 25px;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: bolder;
+  font-size: xx-large;
+  margin-bottom: var(--mb-1);
+}
 
-                    <!-- <div class="share__img">
-                        <img src="assets/img/Piggy.png" alt="">
-                    </div> -->
-                </div>
-                <p class="about_us">Haveten is an investment company specializing in identifying and capitalizing on high-potential opportunities within the stock market.We employ a value-investing philosophy, meticulously analyzing and investing in companies with strong fundamentals and long-term growth prospects. Our team of experienced professionals is dedicated to building a diversified portfolio that delivers consistent and sustainable returns for our stakeholders. At Haveten, we are committed to strategic, informed investments that create enduring value.</p>
-            </section>
+.decoration__title:after{
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    line-height: 48px;
+    left: 30%;
+    top: 50%;
+    animation: abomination1 7.5s linear 1;
+    animation-fill-mode: forwards;
+   
+}
+  </style>
+</head>
+<body>
+ 
+  <nav class="navbar">
+    <div class="logo-container">
+      <img src="assets\img\finallogo.png" alt="Haveten Securities Logo" class="logo">
+    </div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#workshops">Workshops</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  
 
-            <section class="decoration section bd-container" id="decoration">
-                <h2 class="section-title">Our Core Principles</h2>
-                <div class="decoration__container bd-grid">
-                    <div class="decoration__data">
-                        <!-- <img src="assets/img/Coin.png" alt="" class="decoration__img"> -->
-                        <h3 class="decoration__title">Growth</h3>
-                    </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Driven by passion, grounded in strategy—at Haveten, we invest in growth, vision, and resilience</h1>
+    <!-- <p>We strive to provide world-class stock investing solutions, tailored for success.</p> -->
+    <!-- <button class="cta-btn">Explore More</button> -->
+  </section>
 
-                    <div class="decoration__data">
-                        <!-- <img src="assets/img/Coin.png" alt="" class="decoration__img"> -->
-                        <h3 class="decoration__title">Patience</h3>
-                    </div>
+  <!-- About Section -->
+  <section id="about">
+    <h2 style="color: #00f6ff;">Who We Are</h2>
+    <p>Haveten is an investment company specializing in identifying and capitalizing on high-potential opportunities within the stock market. At Haveten Securities, we leverage market expertise, analytical insights, and cutting-edge technology to create sustainable investment opportunities. Our team is dedicated to maximizing your returns while minimizing risks.</p>
+  </section>
+<!-- 
+  
+  <section class="decoration section bd-container" id="decoration">
+    <h2 style="color: #00f6ff;" class="section-title">Our Core Principles</h2>
+    <div class="decoration__container bd-grid">
+        <div class="decoration__data">
+            <h3 class="decoration__title">Growth</h3>
+        </div>
 
-                    <div class="decoration__data">
-                        <!-- <img src="assets/img/Coin.png" alt="" class="decoration__img"> -->
-                        <h3 class="decoration__title">Longitivity</h3>
-                    </div>
-                </div>
-            </section>
+        <div class="decoration__data">
+            <h3 class="decoration__title">Patience</h3>
+        </div>
 
-            <section class="accessory section bd-container" id="accessory">
-                <h2 class="section-title">Read Our Blogs</h2>
+        <div class="decoration__data">
+            <h3 class="decoration__title">Longitivity</h3>
+        </div>
+    </div>
 
-                <div class="accessory__container bd-grid">
-                    <div class="accessory__content">
-                        <img src="assets\img\blog-svgrepo-com.svg" alt="" class="accessory__img">
-                        <h3 class="accessory__title">Coming soon!</h3>
-                       
-                       
-                    </div>
+</section> -->
 
-                    <div class="accessory__content">
-                        <img src="assets\img\blog-svgrepo-com.svg" alt="" class="accessory__img">
-                        <h3 class="accessory__title">Coming soon!</h3>
-                        
-                    </div>
+  <!-- Blog Section -->
+  <section id="blog">
+    <h2 style="color: #00f6ff;">Our Blogs</h2>
+    <div class="blog">
+      <div class="blog-card">
+        <h3 style="font-weight: bolder;">How to Analyze Stocks</h3>
+        <p>Learn the fundamental and technical strategies to evaluate stocks effectively.</p>
+        <a href="blog.html">Read More</a>
+      </div>
+      <div class="blog-card">
+        <h3>Investment Mistakes to Avoid</h3>
+        <p>Discover common mistakes investors make and how to steer clear of them.</p>
+      </div>
+      <div class="blog-card">
+        <h3>Top Stocks to Watch in 2024</h3>
+        <p>Explore promising stocks with growth potential in the coming year.</p>
+      </div>
+    </div>
+  </section>
 
-                    <div class="accessory__content">
-                        <img src="assets\img\blog-svgrepo-com.svg" alt="" class="accessory__img">
-                        <h3 class="accessory__title">Coming soon!</h3>
-                       
-                    </div>
-                </div>
-            </section>
+  <!-- Workshop Section -->
+  <section id="workshops" class="workshop-section">
+    <h2 style="color: #00f6ff;">Upcoming Workshop</h2>
+    <p>Introdcution to Stock Market for Beginners</p>
+    <div class="workshop-details">
+      <p><strong>Date:</strong> December 25, 2024</p>
+      <p><strong>Time:</strong> 5:00 PM</p>
+      <p><strong>Venue:</strong> Online</p>
+    </div>
+    <div class="register">
+        <a href="https://forms.gle/Lo8S1QP74QsKAiuU6" class="register-btn" target="_blank">
+            Register Now
+          </a>
+    </div>
+    
+      
+  </section>
 
-            <section class="send section">
-                <div class="send__container bd-container bd-grid">
-                    <div class="send__content">
-                        <h2 class="section-title-center send__title">Contact Us </h2>
-                        <p class="send__description">Thank you for visiting us. If you have any queries write us here</p>
-                        <form action="">
-                            <div class="send__direction">
-                                <input type="text" placeholder="Queries" class="send__input">
-                                <a href="mailto:info.haveten@gmail.com" class="button">Mail</a>
-                            </div>
-                        </form>
-                    </div>
 
-                    <div class="send__img">
-                        <img src="assets/img/contact.png" alt="">
-                    </div>
-                </div>
-            </section>
-        </main>
 
-        <footer class="footer section">
-            <div class="footer__container bd-container bd-grid">
-                <div class="footer__content">
-                    <h3 class="footer__title">
-                        <a href="#" class="footer__logo">Haveten Securities</a>
-                    </h3>
-                    <p class="footer__description">"The more you learn,the more you earn"</p>
-                </div>
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <h2 style="color: #00f6ff;">Contact Us</h2>
+    <form class="contact-form">
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea rows="5" placeholder="Your Message" required></textarea>
+      <div class="register">
+        <a href="mailto:info.haveten@gmail.com" class="register-btn" target="_blank">
+            Submit
+          </a>
+    </div>
+    
+    </form>
+  </section>
 
-                
-
-                <div class="footer__content">
-                    <!-- <h3 class="footer__title">Others</h3> -->
-                    <ul>
-                        <li><a href="#" class="footer__link">About Us</a></li>
-                        <li><a href="#" class="footer__link">Carrers</a></li>
-                        <li><a href="blog.html" class="footer__link">Blogs</a></li>
-                    </ul>
-                </div>
-                <div class="footer__content">
-                    <!-- <h3 class="footer__title">Our Services</h3> -->
-                    <ul>
-                        <li><a href="#" class="footer__link">Privacy Policy</a></li>
-                        <li><a href="https://forms.gle/2Mg22QvNTGwgDBSg6" class="footer__link">Invest With Us</a></li>
-                        <!-- <li><a href="#" class="footer__link">Comapny_3</a></li> -->
-                    </ul>
-                </div>
-
-                <div class="footer__content">
-                    <h3 class="footer__title">Social Handles</h3>
-                    <a href="mailto:info.haveten@gmail.com" class="footer__social"><i class="bx bxl-google"></i></a>
-                    <a href="https://www.linkedin.com/company/haveten-investments/" class="footer__social"><i class='bx bxl-linkedin'></i></a>
-                    <a href="https://www.instagram.com/haveten?igsh=N3NuMDhrMnBjNHlr" class="footer__social"><i class='bx bxl-instagram-alt'></i></a>
-                </div>
-            </div>
-        </footer>
-
-        <!--========== SCROLL REVEAL ==========-->
-        <script src="https://unpkg.com/scrollreveal"></script>
-
-        <!--========== MAIN JS ==========-->
-        <script src="assets/js/main.js"></script>
-    </body>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Haveten Securities. All Rights Reserved.</p>
+  </footer>
+</body>
 </html>
