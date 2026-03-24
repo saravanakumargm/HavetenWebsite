@@ -1,403 +1,1384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haveten Securities</title>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    /* General Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haveten Securities — Proprietary Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #06080d;
+    --bg2:        #0b0f18;
+    --bg3:        #111827;
+    --gold:       #c8a45a;
+    --gold-light: #e8c87a;
+    --gold-dim:   #7a5f2e;
+    --text:       #e8e2d6;
+    --text-muted: #7a7568;
+    --text-dim:   #4a4840;
+    --accent:     #1a2540;
+    --line:       rgba(200,164,90,0.15);
+    --glow:       rgba(200,164,90,0.08);
+  }
 
-    body {
-      font-family: 'Open Sans', sans-serif;
-      line-height: 1.6;
-      background: #000;
-      color: #ffffff;
-    }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    a {
-      text-decoration: none;
-      color: #ffffff;
-      transition: color 0.3s;
-    }
+  html { scroll-behavior: smooth; }
 
-    a:hover {
-      color: #0ff;
-    }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-    h1, h2, h3 {
-      font-family: 'Merriweather', serif;
-    }
+  /* ── CUSTOM CURSOR ─────────────────────────────── */
+  #cursor {
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+  }
+  #cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.5;
+    transition: transform 0.25s ease, width 0.2s, height 0.2s, opacity 0.2s;
+  }
+  a:hover ~ #cursor-ring, button:hover ~ #cursor-ring {
+    width: 60px; height: 60px;
+  }
 
-    /* Navbar */
-    .navbar {
-      background: #000;
-      color: #00f6ff;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #00f6ff;
-    }
+  /* ── TICKER ────────────────────────────────────── */
+  .ticker-wrap {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--line);
+    padding: 8px 0;
+    overflow: hidden;
+    position: fixed; top: 0; width: 100%; z-index: 900;
+  }
+  .ticker-track {
+    display: flex; gap: 60px;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+  .ticker-item .sym { color: var(--gold); font-weight: 500; margin-right: 6px; }
+  .ticker-item .up  { color: #4ade80; }
+  .ticker-item .dn  { color: #f87171; }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    .navbar h1 {
-      font-size: 1.8rem;
-    }
-
-    .navbar ul {
-      list-style: none;
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .navbar li {
-      font-size: 1rem;
-    }
-
-    /* Hero Section */
-    .hero {
-      background: #000;
-      color: #ffffff;
-      text-align: center;
-      padding: 100px 20px;
-      position: relative;
-      /* border-bottom: 1px solid #00f6ff; */
-    }
-
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-    }
-
-    .hero .cta-btn {
-      background: #00f6ff;
-      color: #000;
-      padding: 15px 30px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .hero .cta-btn:hover {
-      background: #0ff;
-    }
-
-    /* Section Styles */
-    section {
-      padding: 60px 20px;
-    }
-
-    section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    section p {
-      max-width: 800px;
-      margin: 0 auto 20px;
-      font-size: 1.2rem;
-      text-align: center;
-    }
-
-    /* Blog Section */
-    .blog {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-
-    .blog-card {
-      background: #111;
-      padding: 20px;
-      border: 1px solid #24dbe8;
-      border-radius: 10px;
-      max-width: 300px;
-    }
-
-    .blog-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-
-    .blog-card p {
-      font-size: 1rem;
-    }
-
-    /* Workshop Section */
-    .workshop-section {
-      background: #111;
-    }
-
-    /* Contact Section */
-    .contact {
-      background: #000;
-      border-top: 1px solid #ffffff;
-    }
-
-    .contact-form {
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .contact-form input, .contact-form textarea, .contact-form button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 1rem;
-      border: 1px solid #00f6ff;
-      border-radius: 5px;
-      background: #111;
-      color: #ffffff;
-    }
-
-    .contact-form button {
-      background: #00f6ff;
-      color: #000;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .contact-form button:hover {
-      background: rgb(255, 255, 255);
-    }
-
-    /* Footer */
-    footer {
-      background: #111;
-      color: #ffffff;
-      text-align: center;
-      padding: 20px 0;
-      border-top: 1px solid #00f6ff;
-    }
-    
-    footer p {
-      font-size: 0.9rem;
-    }
-    .nav__logo{
-        color: var(--title-color);
-        font-weight: var(--font-semi-bold);
-        size;
-    }
-
-    .nav__logo:hover{
-    color: var(--first-color);
-    }
-    /* Navbar Logo */
-.logo-container {
-  /* display: flex; */
-  height: 50px;
-  display: flex;
-  /* align-items: center; */
-  margin-right: 15px;
-}
-
-.logo {
-  max-height: 50px; /* Adjust size as needed */
-  width:80px;
-}
-.register-btn {
-      /* background: #00f6ff;
-      color: #000;
-      
-      justify-content: center;
-      text-transform: uppercase;
-      font-size: 1.2rem;
-      font-weight: bold;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-align: center;
-      text-decoration: none; */
-        
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 1rem;
-      border: 1px solid #00f6ff;
-      border-radius: 5px;
-      background: #5dd6eb;
-      color: #000000;
-      object-position: center;
-    }
-
-    .register-btn:hover {
-      background: rgb(3, 104, 104);
-      transform: scale(1.1);
-    }
-    .decoration__container{
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.decoration__data{
-  text-align: center;
-  padding: 1rem 1rem 2rem;
-  margin-top: 30px;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-  background-color: var(--container-color);
-  box-shadow: 0 2px 6px rgba(65,11,16,.15);
-  border-radius: 1rem;
-}
-
-.decoration__data:hover{
-  box-shadow: 0 3px 12px rgba(65,11,16,.15);
-}
-
-.decoration__img{
-  width: 180px;
-}
-
-.register{
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.decoration__title{
-  font-size: var(--h3-font-size);
-  margin-top: 25px;
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-weight: bolder;
-  font-size: xx-large;
-  margin-bottom: var(--mb-1);
-}
-
-.decoration__title:after{
+  /* ── NAV ───────────────────────────────────────── */
+  nav {
+    position: fixed; top: 37px; width: 100%; z-index: 800;
+    padding: 18px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.3s, backdrop-filter 0.3s, padding 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(6,8,13,0.92);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 60px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo-mark {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    transform: rotate(45deg);
+  }
+  .nav-logo-mark::after {
+    content: '';
+    width: 16px; height: 16px;
+    background: var(--gold);
     position: absolute;
-    content: "";
+  }
+  .nav-logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text);
+  }
+  .nav-logo-text span { color: var(--gold); }
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    padding: 10px 24px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--bg); }
+
+  /* ── HERO ──────────────────────────────────────── */
+  #hero {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    padding-top: 80px;
+  }
+  #hero-canvas {
+    position: absolute; inset: 0;
+    z-index: 0;
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 1;
+    background-image:
+      linear-gradient(rgba(200,164,90,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,164,90,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-vignette {
+    position: absolute; inset: 0; z-index: 2;
+    background: radial-gradient(ellipse at center, transparent 30%, var(--bg) 80%);
+  }
+  .hero-content {
+    position: relative; z-index: 3;
+    text-align: center;
+    max-width: 900px;
+    padding: 0 40px;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: '—'; margin: 0 12px; opacity: 0.5;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 8vw, 110px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.6s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-title .line-break { display: block; }
+  .hero-subtitle {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto 48px;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.8s forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 16px; justify-content: center; align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.9s 1s forwards;
+  }
+  .btn-primary {
+    padding: 16px 40px;
+    background: var(--gold);
+    color: var(--bg);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-ghost {
+    padding: 15px 40px;
+    border: 1px solid var(--text-dim);
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeIn 1s 1.5s forwards;
+  }
+  .hero-scroll span {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(var(--gold), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* ── MARQUEE BAND ─────────────────────────────── */
+  .marquee-band {
+    background: var(--gold);
+    padding: 14px 0;
+    overflow: hidden;
+    border-top: none;
+  }
+  .marquee-inner {
+    display: flex; gap: 0;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--bg);
+    padding: 0 40px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .marquee-dot { width: 5px; height: 5px; background: var(--bg); border-radius: 50%; opacity: 0.4; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* ── SECTIONS COMMON ──────────────────────────── */
+  section { padding: 120px 0; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 60px; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 68px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ── ABOUT ────────────────────────────────────── */
+  #about { background: var(--bg); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 100px;
+    align-items: center;
+  }
+  .about-text p {
+    font-size: 15px; line-height: 1.9;
+    color: var(--text-muted);
+    margin-top: 28px;
+    letter-spacing: 0.02em;
+  }
+  .about-right {
+    position: relative;
+  }
+  .about-card {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(var(--gold), transparent);
+  }
+  .about-card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .pillars {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .pillar {
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .pillar-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold-dim);
+    padding-top: 2px;
+    min-width: 24px;
+  }
+  .pillar-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .pillar-body p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .about-ornament {
+    position: absolute; bottom: -30px; right: -30px;
+    width: 180px; height: 180px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .about-ornament::after {
+    content: '';
+    position: absolute; inset: 20px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+  }
+
+  /* ── STATS ────────────────────────────────────── */
+  #stats {
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 80px 0;
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .stat-item {
+    padding: 40px;
+    border-right: 1px solid var(--line);
+    text-align: center;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: var(--glow); }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 62px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .stat-suffix {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--gold);
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 12px;
+    display: block;
+  }
+  .stat-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  /* ── EDGE / STRATEGY ──────────────────────────── */
+  #edge { background: var(--bg); overflow: hidden; position: relative; }
+  .edge-bg {
+    position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,164,90,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .edge-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px;
+    background: var(--line);
+    margin-top: 60px;
+    border: 1px solid var(--line);
+  }
+  .edge-card {
+    background: var(--bg);
+    padding: 44px 36px;
+    transition: background 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .edge-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .edge-card:hover { background: var(--bg2); }
+  .edge-card:hover::after { transform: scaleX(1); }
+  .edge-icon {
+    width: 42px; height: 42px;
+    border: 1px solid var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 28px;
+    font-size: 18px;
+    color: var(--gold);
+  }
+  .edge-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+  .edge-card p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text-muted);
+  }
+  .edge-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  /* ── PHILOSOPHY STRIP ─────────────────────────── */
+  .philosophy-strip {
+    background: var(--accent);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 60px 0;
+  }
+  .philosophy-inner {
+    max-width: 900px; margin: 0 auto; padding: 0 60px;
+    text-align: center;
+  }
+  .philosophy-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 3.5vw, 42px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .philosophy-quote strong { color: var(--gold); font-style: normal; font-weight: 600; }
+  .philosophy-attr {
+    margin-top: 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  /* ── WORKSHOPS ────────────────────────────────── */
+  #workshops { background: var(--bg2); }
+  .workshops-split {
+    display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+  }
+  .workshop-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 48px;
+    position: relative;
+  }
+  .workshop-card::before {
+    content: 'UPCOMING';
+    position: absolute; top: -1px; right: 32px;
+    background: var(--gold);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    padding: 5px 12px;
+  }
+  .workshop-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .workshop-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 28px;
+  }
+  .workshop-meta {
+    display: flex; flex-direction: column; gap: 12px;
+    margin-bottom: 32px;
+  }
+  .workshop-meta-item {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .workshop-meta-item .ico { color: var(--gold); font-size: 14px; }
+  .workshops-right h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300;
+    line-height: 1.3; margin-bottom: 20px;
+  }
+  .workshops-right p {
+    font-size: 14px; line-height: 1.8;
+    color: var(--text-muted); margin-bottom: 36px;
+  }
+  .curriculum {
+    display: flex; flex-direction: column; gap: 0;
+    border: 1px solid var(--line);
+  }
+  .curriculum-item {
+    display: flex; align-items: center; gap: 20px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+  .curriculum-item:last-child { border-bottom: none; }
+  .curriculum-item:hover { background: var(--glow); }
+  .curriculum-item .ci-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold-dim);
+    min-width: 28px;
+  }
+  .curriculum-item .ci-dot {
+    width: 6px; height: 6px;
+    border: 1px solid var(--gold);
+    min-width: 6px;
+  }
+
+  /* ── BLOG ─────────────────────────────────────── */
+  #blog { background: var(--bg); }
+  .blog-grid {
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line);
+    margin-top: 56px;
+  }
+  .blog-card {
+    background: var(--bg);
+    padding: 44px 40px;
+    text-decoration: none;
+    display: block;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .blog-card:hover { background: var(--bg2); }
+  .blog-card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .blog-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 14px;
+    transition: color 0.2s;
+  }
+  .blog-card:hover h3 { color: var(--gold); }
+  .blog-card p {
+    font-size: 13px; line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+  .blog-card-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .blog-card-link::after { content: '→'; transition: margin 0.2s; }
+  .blog-card:hover .blog-card-link::after { margin-left: 6px; }
+  .blog-card.featured {
+    grid-row: span 2;
+    border-right: 1px solid var(--line);
+  }
+  .blog-card.featured h3 { font-size: 28px; }
+  .blog-card.coming {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    border-top: 1px solid var(--line);
+    padding: 30px;
+  }
+  .coming-badge {
+    width: 50px; height: 50px;
+    border: 1px solid var(--text-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  /* ── CONTACT ──────────────────────────────────── */
+  #contact {
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+  }
+  .contact-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 100px;
+    align-items: start;
+  }
+  .contact-left p {
+    font-size: 15px; line-height: 1.8;
+    color: var(--text-muted);
+    margin-top: 24px; margin-bottom: 44px;
+  }
+  .contact-detail {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .contact-detail-item {
+    display: flex; align-items: center; gap: 16px;
+    font-size: 14px;
+  }
+  .contact-detail-item .cd-icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-size: 14px;
+    flex-shrink: 0;
+  }
+  .contact-detail-item a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-detail-item a:hover { color: var(--gold); }
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-group { position: relative; }
+  .form-group label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .form-group input, .form-group textarea, .form-group select {
     width: 100%;
-    height: 100%;
-    line-height: 48px;
-    left: 30%;
-    top: 50%;
-    animation: abomination1 7.5s linear 1;
-    animation-fill-mode: forwards;
-   
-}
-  </style>
+    background: var(--bg);
+    border: 1px solid var(--text-dim);
+    border-radius: 0;
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    transition: border-color 0.2s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--gold);
+  }
+  .form-group textarea { height: 120px; resize: vertical; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-submit {
+    padding: 16px 40px;
+    background: var(--gold);
+    border: none;
+    color: var(--bg);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: none;
+    transition: background 0.3s;
+    align-self: flex-start;
+  }
+  .form-submit:hover { background: var(--gold-light); }
+
+  /* ── FOOTER ───────────────────────────────────── */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    padding: 60px 0 40px;
+  }
+  .footer-inner {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px;
+    margin-bottom: 60px;
+  }
+  .footer-brand p {
+    font-size: 13px; line-height: 1.7;
+    color: var(--text-dim); margin-top: 16px;
+    max-width: 220px;
+  }
+  .footer-col h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .footer-links a:hover { color: var(--text); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 28px;
+  }
+  .footer-bottom p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+  .footer-reg {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ANIMATIONS ───────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ── MOBILE ───────────────────────────────────── */
+  @media (max-width: 900px) {
+    nav { padding: 14px 24px; }
+    nav.scrolled { padding: 10px 24px; }
+    .nav-links { display: none; }
+    .container { padding: 0 24px; }
+    section { padding: 80px 0; }
+    .about-grid, .contact-inner, .workshops-split { grid-template-columns: 1fr; gap: 48px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .stat-item { border-bottom: 1px solid var(--line); border-right: none; }
+    .stat-item:nth-child(odd) { border-right: 1px solid var(--line); }
+    .edge-grid { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .blog-card.featured { grid-row: auto; border-right: none; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .form-row { grid-template-columns: 1fr; }
+    body { cursor: auto; }
+    #cursor, #cursor-ring { display: none; }
+  }
+</style>
 </head>
 <body>
- 
-  <nav class="navbar">
-    <div class="logo-container">
-      <img src="assets\img\finallogo.png" alt="Haveten Securities Logo" class="logo">
+
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Ticker -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker">
+    <div class="ticker-item"><span class="sym">NIFTY50</span> 22,147.90 <span class="up">▲ 1.24%</span></div>
+    <div class="ticker-item"><span class="sym">BANKNIFTY</span> 48,320.15 <span class="up">▲ 0.87%</span></div>
+    <div class="ticker-item"><span class="sym">SENSEX</span> 72,815.60 <span class="dn">▼ 0.31%</span></div>
+    <div class="ticker-item"><span class="sym">NIFTYMID150</span> 18,440.00 <span class="up">▲ 1.52%</span></div>
+    <div class="ticker-item"><span class="sym">INDIA VIX</span> 14.22 <span class="dn">▼ 2.10%</span></div>
+    <div class="ticker-item"><span class="sym">USDINR</span> 83.41 <span class="dn">▼ 0.08%</span></div>
+    <div class="ticker-item"><span class="sym">GOLD</span> 72,480 <span class="up">▲ 0.45%</span></div>
+    <div class="ticker-item"><span class="sym">CRUDEOIL</span> 6,840 <span class="up">▲ 0.62%</span></div>
+    <!-- Duplicate for seamless loop -->
+    <div class="ticker-item"><span class="sym">NIFTY50</span> 22,147.90 <span class="up">▲ 1.24%</span></div>
+    <div class="ticker-item"><span class="sym">BANKNIFTY</span> 48,320.15 <span class="up">▲ 0.87%</span></div>
+    <div class="ticker-item"><span class="sym">SENSEX</span> 72,815.60 <span class="dn">▼ 0.31%</span></div>
+    <div class="ticker-item"><span class="sym">NIFTYMID150</span> 18,440.00 <span class="up">▲ 1.52%</span></div>
+    <div class="ticker-item"><span class="sym">INDIA VIX</span> 14.22 <span class="dn">▼ 2.10%</span></div>
+    <div class="ticker-item"><span class="sym">USDINR</span> 83.41 <span class="dn">▼ 0.08%</span></div>
+    <div class="ticker-item"><span class="sym">GOLD</span> 72,480 <span class="up">▲ 0.45%</span></div>
+    <div class="ticker-item"><span class="sym">CRUDEOIL</span> 6,840 <span class="up">▲ 0.62%</span></div>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark"></div>
+    <span class="nav-logo-text">Haveten <span>Securities</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#edge">Our Edge</a></li>
+    <li><a href="#workshops">Workshops</a></li>
+    <li><a href="#blog">Insights</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Engage With Us</a>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-grid"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Proprietary Trading &nbsp;·&nbsp; Indian Capital Markets</p>
+    <h1 class="hero-title">
+      <span class="line-break">Where Precision</span>
+      <em>Meets Capital</em>
+    </h1>
+    <p class="hero-subtitle">
+      Haveten Securities deploys systematic intelligence and market expertise across Indian equities and derivatives — turning analytical edge into consistent, compounding returns.
+    </p>
+    <div class="hero-actions">
+      <a href="#about" class="btn-primary">Discover Haveten</a>
+      <a href="#edge" class="btn-ghost">Our Strategy</a>
     </div>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#workshops">Workshops</a></li>
-      <li><a href="#blog">Blog</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-  
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1>Driven by passion, grounded in strategy—at Haveten, we invest in growth, vision, and resilience</h1>
-    <!-- <p>We strive to provide world-class stock investing solutions, tailored for success.</p> -->
-    <!-- <button class="cta-btn">Explore More</button> -->
-  </section>
+<!-- Marquee -->
+<div class="marquee-band">
+  <div class="marquee-inner">
+    <div class="marquee-item">Proprietary Trading <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Indian Equities <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Nifty Derivatives <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Systematic Strategies <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Risk Intelligence <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Capital Efficiency <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Market Expertise <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Analytical Edge <span class="marquee-dot"></span></div>
+    <!-- duplicate -->
+    <div class="marquee-item">Proprietary Trading <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Indian Equities <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Nifty Derivatives <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Systematic Strategies <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Risk Intelligence <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Capital Efficiency <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Market Expertise <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Analytical Edge <span class="marquee-dot"></span></div>
+  </div>
+</div>
 
-  <!-- About Section -->
-  <section id="about">
-    <h2 style="color: #00f6ff;">Who We Are</h2>
-    <p>Haveten is an investment company specializing in identifying and capitalizing on high-potential opportunities within the stock market. At Haveten Securities, we leverage market expertise, analytical insights, and cutting-edge technology to create sustainable investment opportunities. Our team is dedicated to maximizing your returns while minimizing risks.</p>
-  </section>
-<!-- 
-  
-  <section class="decoration section bd-container" id="decoration">
-    <h2 style="color: #00f6ff;" class="section-title">Our Core Principles</h2>
-    <div class="decoration__container bd-grid">
-        <div class="decoration__data">
-            <h3 class="decoration__title">Growth</h3>
-        </div>
-
-        <div class="decoration__data">
-            <h3 class="decoration__title">Patience</h3>
-        </div>
-
-        <div class="decoration__data">
-            <h3 class="decoration__title">Longitivity</h3>
-        </div>
-    </div>
-
-</section> -->
-
-  <!-- Blog Section -->
-  <section id="blog">
-    <h2 style="color: #00f6ff;">Our Blogs</h2>
-    <div class="blog">
-      <div class="blog-card">
-        <h3 style="font-weight: bolder;">Impact of Global Events on Portfolio</h3>
-        <p>Learn how global events affect out Portfolios and how wen navigate them.</p>
-        <a href="blogone.html">Read More</a>
+<!-- About -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="section-label">Who We Are</p>
+        <h2 class="section-title">Built on Discipline.<br><em>Driven by Edge.</em></h2>
+        <p>Haveten Securities is a proprietary trading firm operating at the intersection of quantitative rigor and deep market intuition. We specialize in capitalizing on high-probability opportunities across Indian equity and derivatives markets.</p>
+        <p>Our approach is not reactive — it is engineered. Every position is the result of a structured analytical process, a clear risk mandate, and a conviction forged from research and live-market experience.</p>
       </div>
-      <div class="blog-card">
-        <h3>Coming Soon</h3>
-        <p>Stay Tuned!</p>
-        <a href="#">Read More</a>
+      <div class="about-right reveal reveal-delay-2">
+        <div class="about-card">
+          <p class="about-card-title">Our Core Pillars</p>
+          <div class="pillars">
+            <div class="pillar">
+              <span class="pillar-num">01</span>
+              <div class="pillar-body">
+                <h4>Analytical Precision</h4>
+                <p>Every trade hypothesis is stress-tested against historical data, volatility regimes, and macro context before deployment.</p>
+              </div>
+            </div>
+            <div class="pillar">
+              <span class="pillar-num">02</span>
+              <div class="pillar-body">
+                <h4>Risk-First Philosophy</h4>
+                <p>We do not optimise for returns alone. Drawdown control, position sizing, and exit discipline define our edge.</p>
+              </div>
+            </div>
+            <div class="pillar">
+              <span class="pillar-num">03</span>
+              <div class="pillar-body">
+                <h4>Technological Leverage</h4>
+                <p>Proprietary tools, real-time OI analytics, and systematic frameworks give us structural advantages over the market.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about-ornament"></div>
       </div>
-      <div class="blog-card">
-        <h3>Coming Soon</h3>
-        <p>Stay Tuned</p>
-        <a href="blog.html">Read More</a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <span class="stat-num" data-target="5">0</span><span class="stat-suffix">+</span>
+        <span class="stat-label">Years in Markets</span>
+        <p class="stat-desc">Live capital deployment across multiple market cycles</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <span class="stat-num" data-target="130">0</span><span class="stat-suffix">+</span>
+        <span class="stat-label">Stocks Monitored</span>
+        <p class="stat-desc">Nifty 50, Midcap & Smallcap universe tracked daily</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <span class="stat-num" data-target="3000">0</span><span class="stat-suffix">+</span>
+        <span class="stat-label">Trades Analysed</span>
+        <p class="stat-desc">Backtested strategies with live-market validation</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <span class="stat-num" data-target="100">0</span><span class="stat-suffix">%</span>
+        <span class="stat-label">Proprietary Capital</span>
+        <p class="stat-desc">No external AUM — we trade our own skin in the game</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Workshop Section -->
-  <section id="workshops" class="workshop-section">
-    <h2 style="color: #00f6ff;">Upcoming Workshop</h2>
-    <p>Introdcution to Stock Market for Beginners</p>
-    <div class="workshop-details">
-      <p><strong>Date:</strong> December 25, 2024</p>
-      <p><strong>Time:</strong> 5:00 PM</p>
-      <p><strong>Venue:</strong> Online</p>
+<!-- Edge -->
+<section id="edge">
+  <div class="edge-bg"></div>
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Our Edge</p>
+      <h2 class="section-title">How We <em>Think</em><br>About Markets</h2>
     </div>
-    <div class="register">
-        <a href="https://forms.gle/Lo8S1QP74QsKAiuU6" class="register-btn" target="_blank">
-            Register Now
-          </a>
+    <div class="edge-grid">
+      <div class="edge-card reveal reveal-delay-1">
+        <span class="edge-num">01</span>
+        <div class="edge-icon">⬡</div>
+        <h3>Quantitative Signal Generation</h3>
+        <p>Momentum, quality, and volatility signals are synthesised into a composite scoring engine that ranks opportunity across our entire coverage universe in real time.</p>
+      </div>
+      <div class="edge-card reveal reveal-delay-2">
+        <span class="edge-num">02</span>
+        <div class="edge-icon">◈</div>
+        <h3>Derivatives Intelligence</h3>
+        <p>Open Interest chain analysis, Max Pain computation, PCR, and GEX interpretation give us a real-time read on institutional positioning across Nifty options.</p>
+      </div>
+      <div class="edge-card reveal reveal-delay-3">
+        <span class="edge-num">03</span>
+        <div class="edge-icon">◇</div>
+        <h3>Regime-Adaptive Allocation</h3>
+        <p>Our portfolio rotation models shift between momentum, defensive, and cash regimes based on macro trend detection — protecting capital during adverse conditions.</p>
+      </div>
+      <div class="edge-card reveal reveal-delay-2">
+        <span class="edge-num">04</span>
+        <div class="edge-icon">△</div>
+        <h3>Scenario-Based Trade Architecture</h3>
+        <p>Every trade has three defined scenarios — primary, alternate, and stop — with pre-calculated R-multiples, ensuring asymmetric risk-reward before position entry.</p>
+      </div>
+      <div class="edge-card reveal reveal-delay-3">
+        <span class="edge-num">05</span>
+        <div class="edge-icon">◉</div>
+        <h3>Technology-Powered Execution</h3>
+        <p>Custom Python-based analytics pipelines, live price feeds, and backtesting frameworks ensure every decision is grounded in verified, reproducible research.</p>
+      </div>
+      <div class="edge-card reveal reveal-delay-4">
+        <span class="edge-num">06</span>
+        <div class="edge-icon">▷</div>
+        <h3>Continuous Research Loop</h3>
+        <p>Markets evolve. Our models are continually tested, stress-tested against historical regimes, and refined to remain predictive — not just descriptive.</p>
+      </div>
     </div>
-    
-      
-  </section>
+  </div>
+</section>
 
+<!-- Philosophy -->
+<div class="philosophy-strip">
+  <div class="philosophy-inner reveal">
+    <p class="philosophy-quote">
+      "Markets reward those who are <strong>prepared before the opportunity</strong>, not those who react after it arrives."
+    </p>
+    <p class="philosophy-attr">— Haveten Investment Philosophy</p>
+  </div>
+</div>
 
-
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <h2 style="color: #00f6ff;">Contact Us</h2>
-    <form class="contact-form">
-      <input type="text" placeholder="Your Name" required />
-      <input type="email" placeholder="Your Email" required />
-      <textarea rows="5" placeholder="Your Message" required></textarea>
-      <div class="register">
-        <a href="mailto:info.haveten@gmail.com" class="register-btn" target="_blank">
-            Submit
-          </a>
+<!-- Workshops -->
+<section id="workshops">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Knowledge Transfer</p>
+      <h2 class="section-title">Workshops &<br><em>Education</em></h2>
     </div>
-    
-    </form>
-  </section>
+    <div class="workshops-split">
+      <div class="workshop-card reveal">
+        <p class="workshop-tag">Next Cohort</p>
+        <h3 class="workshop-title">Introduction to the Stock Market for Beginners</h3>
+        <div class="workshop-meta">
+          <div class="workshop-meta-item"><span class="ico">📅</span> December 25, 2024</div>
+          <div class="workshop-meta-item"><span class="ico">🕔</span> 5:00 PM IST</div>
+          <div class="workshop-meta-item"><span class="ico">🌐</span> Online — Live Session</div>
+          <div class="workshop-meta-item"><span class="ico">◎</span> Limited Seats Available</div>
+        </div>
+        <a href="https://forms.gle/Lo8S1QP74QsKAiuU6" target="_blank" class="btn-primary" style="display:inline-block;">Reserve Your Seat →</a>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;line-height:1.4;margin-bottom:16px;">What You Will <em style="color:var(--gold);">Learn</em></h3>
+        <p style="font-size:14px;line-height:1.8;color:var(--text-muted);margin-bottom:28px;">A structured introduction to Indian capital markets — from market mechanics to your first trade, guided by practitioners with live-market experience.</p>
+        <div class="curriculum">
+          <div class="curriculum-item"><span class="ci-num">01</span><div class="ci-dot"></div><span>How Indian equity and derivatives markets function</span></div>
+          <div class="curriculum-item"><span class="ci-num">02</span><div class="ci-dot"></div><span>Understanding NSE, BSE, and market participants</span></div>
+          <div class="curriculum-item"><span class="ci-num">03</span><div class="ci-dot"></div><span>Reading price charts and basic technical analysis</span></div>
+          <div class="curriculum-item"><span class="ci-num">04</span><div class="ci-dot"></div><span>Risk management: position sizing and stop-loss discipline</span></div>
+          <div class="curriculum-item"><span class="ci-num">05</span><div class="ci-dot"></div><span>Introduction to Nifty options and derivatives basics</span></div>
+          <div class="curriculum-item"><span class="ci-num">06</span><div class="ci-dot"></div><span>Building a systematic watchlist and trade journal</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2024 Haveten Securities. All Rights Reserved.</p>
-  </footer>
+<!-- Blog -->
+<section id="blog">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Market Insights</p>
+      <h2 class="section-title">Research &<br><em>Perspectives</em></h2>
+    </div>
+    <div class="blog-grid">
+      <a href="https://havetensecurities.in/blogone.html" class="blog-card featured reveal">
+        <p class="blog-card-tag">Macro Research · Portfolio Strategy</p>
+        <h3>The Impact of Global Events on Your Portfolio</h3>
+        <p>When geopolitical shocks, central bank pivots, or systemic credit events occur, correlations compress and conventional diversification fails. Learn how Haveten navigates these inflection points with disciplined scenario frameworks.</p>
+        <span class="blog-card-link">Read the Analysis</span>
+      </a>
+      <a href="#" class="blog-card reveal reveal-delay-1">
+        <p class="blog-card-tag">Derivatives Intelligence</p>
+        <h3>Decoding Open Interest: What the OI Chain Reveals</h3>
+        <p>A deep dive into how institutional flow is embedded in NSE's options chain and what PCR, Max Pain, and GEX tell the informed trader.</p>
+        <span class="blog-card-link">Coming Soon</span>
+      </a>
+      <div class="blog-card coming reveal reveal-delay-2">
+        <div class="coming-badge">+</div>
+        <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;">More Insights</p>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">Further research pieces are in preparation. Stay tuned.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-left reveal">
+        <p class="section-label">Get In Touch</p>
+        <h2 class="section-title">Let's Talk<br><em>Markets</em></h2>
+        <p>Whether you're exploring our workshops, looking to collaborate, or simply want to understand how we operate — we're open to conversations with the intellectually curious.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-item">
+            <div class="cd-icon">✉</div>
+            <a href="mailto:info.haveten@gmail.com">info.haveten@gmail.com</a>
+          </div>
+          <div class="contact-detail-item">
+            <div class="cd-icon">◎</div>
+            <span style="color:var(--text-muted);">India — Operating across NSE markets</span>
+          </div>
+          <div class="contact-detail-item">
+            <div class="cd-icon">⏱</div>
+            <span style="color:var(--text-muted);">Response within 24 market hours</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" placeholder="Arjun" required>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" placeholder="Sharma" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <select>
+              <option value="">Select a topic</option>
+              <option>Workshop Registration</option>
+              <option>Research Collaboration</option>
+              <option>General Enquiry</option>
+              <option>Media & Press</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="Tell us what's on your mind..."></textarea>
+          </div>
+          <button type="submit" class="form-submit">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="text-decoration:none;">
+          <div class="nav-logo-mark" style="width:30px;height:30px;"></div>
+          <span class="nav-logo-text" style="font-size:18px;">Haveten <span>Securities</span></span>
+        </a>
+        <p>Proprietary trading firm operating across Indian equity and derivatives markets with a systematic, discipline-first approach.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#edge">Our Edge</a></li>
+          <li><a href="#workshops">Workshops</a></li>
+          <li><a href="#blog">Insights</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Markets</h4>
+        <ul class="footer-links">
+          <li><a href="#">NSE Equities</a></li>
+          <li><a href="#">Nifty Options</a></li>
+          <li><a href="#">Bank Nifty</a></li>
+          <li><a href="#">Midcap Universe</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:info.haveten@gmail.com">Email Us</a></li>
+          <li><a href="#workshops">Upcoming Workshop</a></li>
+          <li><a href="#blog">Research Blog</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Haveten Securities. All Rights Reserved.</p>
+      <p class="footer-reg">Proprietary Trading — Indian Capital Markets</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ──────────────────────────────────── -->
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+});
+(function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  cursorRing.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+  requestAnimationFrame(animRing);
+})();
+
+// Nav scroll
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Hero canvas — particle network
+const canvas = document.getElementById('hero-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = 70;
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+
+function initParticles() {
+  particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    size: Math.random() * 1.5 + 0.5,
+  }));
+}
+initParticles();
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = canvas.width;
+    if (p.x > canvas.width) p.x = 0;
+    if (p.y < 0) p.y = canvas.height;
+    if (p.y > canvas.height) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(200,164,90,0.5)';
+    ctx.fill();
+  });
+  // Lines
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(200,164,90,${0.12 * (1 - dist / 120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+reveals.forEach(r => revealObs.observe(r));
+
+// Counter animation
+function animateCounter(el, target, suffix) {
+  const duration = 1800;
+  const start = performance.now();
+  const isDecimal = target % 1 !== 0;
+  const step = ts => {
+    const progress = Math.min((ts - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(ease * target);
+    el.textContent = isDecimal ? (ease * target).toFixed(1) : current;
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  };
+  requestAnimationFrame(step);
+}
+
+const statNums = document.querySelectorAll('.stat-num[data-target]');
+const statObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = parseFloat(el.dataset.target);
+      animateCounter(el, target);
+      statObs.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+statNums.forEach(n => statObs.observe(n));
+
+// Form submit
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Message Sent ✓';
+  btn.style.background = '#4ade80';
+  btn.style.color = '#06080d';
+  setTimeout(() => {
+    btn.textContent = 'Send Message →';
+    btn.style.background = '';
+    btn.style.color = '';
+    e.target.reset();
+  }, 3000);
+}
+</script>
 </body>
 </html>
